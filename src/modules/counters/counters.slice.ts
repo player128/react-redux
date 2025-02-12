@@ -1,60 +1,88 @@
+import { createAction, createReducer } from '@reduxjs/toolkit';
 import { AppState } from '../../store';
+
 type CounterState = {
     counter: number
 }
+
+export const incrementAction = createAction<{
+    counterId: CounterId
+}>('counters/increment')
+
+export const decrementAction = createAction<{
+    counterId: CounterId
+}>('counters/decrement')
 
 type CountersState = Record<CounterId, CounterState | undefined>
 
 export type CounterId = string;
 
-export type IncrementAction = {
-    type: 'increment';
-    payload: {
-        counterId: CounterId
-    }
-};
+const initialCounterState: CounterState = { counter:0 };
+const initialCountersState: CountersState = {}
 
-export type DecrementAction = {
-    type: 'decrement';
-    payload: {
-        counterId: CounterId
-    };
-};
+export const counterReducer = 
+createReducer(initialCountersState, (builder) => {
+    builder.addCase(incrementAction, (state, action) => {
+        // До использования immera
+        // const { counterId } = action.payload;
+        //const currentCounter = state[counterId] ?? initialCounterState;
 
-type Action = 
-    | IncrementAction 
-    | DecrementAction 
+        // return {
+        //     ...state,
+        //     [counterId]: {
+        //         ...currentCounter,
+        //         counter: currentCounter.counter + 1,
+        //     }
+        // }
 
-const initialCounterState: CounterState = {counter:0};
-const initialCountersState:CountersState = {}
+        const { counterId } = action.payload;
 
-export const counterReducer = (state = initialCountersState, action: Action): CountersState => {
-    switch(action.type) {
-        case "increment" : {
-            const { counterId } = action.payload;
-            const currentCounter = state[counterId] ?? initialCounterState;
-            return {
-                ...state,
-                [counterId]: {
-                    ...currentCounter,
-                    counter: currentCounter.counter + 1,
-                }
-            }
+        if (!state[counterId]) {
+            // всегда создаем новый объект, иначе другие счеткики не будут работать
+            state[counterId] = {...initialCounterState};
         }
-        case "decrement" : {
-            const { counterId } = action.payload;
-            const currentCounter = state[counterId] ?? initialCounterState;
-            return {
-                ...state,
-                [counterId]: {
-                    ...currentCounter,
-                    counter: currentCounter.counter - 1,
-                }
-            }
+            
+        state[counterId].counter++;
+    })
+
+    builder.addCase(decrementAction, (state, action) => {
+        const { counterId } = action.payload;
+
+        if (!state[counterId]) {
+            state[counterId] = {...initialCounterState};
         }
-        default :
-         return state;
-    }
-}
+
+        state[counterId].counter--;    
+    })
+});
+
+// export const counterReducer = (state = initialCountersState, action: Action): CountersState => {
+//     switch(action.type) {
+//         case "increment" : {
+//             const { counterId } = action.payload;
+//             const currentCounter = state[counterId] ?? initialCounterState;
+//             return {
+//                 ...state,
+//                 [counterId]: {
+//                     ...currentCounter,
+//                     counter: currentCounter.counter + 1,
+//                 }
+//             }
+//         }
+//         case "decrement" : {
+//             const { counterId } = action.payload;
+//             const currentCounter = state[counterId] ?? initialCounterState;
+//             return {
+//                 ...state,
+//                 [counterId]: {
+//                     ...currentCounter,
+//                     counter: currentCounter.counter - 1,
+//                 }
+//             }
+//         }
+//         default :
+//          return state;
+//     }
+// }
 
 export const selectCounter = (state: AppState, counterId : CounterId) => state.counters[counterId];
