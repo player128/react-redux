@@ -1,26 +1,13 @@
 import { memo, useState } from "react";
-import { useAppDispatch, UserSelectedAction, UserRemoveSelected, useAppSelector, AppState, createAppSelector, UserId } from './store';
+import { useAppDispatch,  useAppSelector} from '../../store';
+import { selectSelectedUserId, selectSortedUsers, UserId, UserSelectedAction, UserRemoveSelected } from './users.slice';
 
-const selectSortedUsers = createAppSelector(
-    (state : AppState) => state.users.ids,
-    (state : AppState) => state.users.entities,
-    (_ : AppState, sort: "asc" | "desc") => sort,
-    (ids, entities, sort) =>      
-    ids
-        .map(id => entities[id])
-        .sort((a, b) => {
-            if (sort  === 'asc') {
-                return a.name.localeCompare(b.name);
-            } else {
-                return b.name.localeCompare(a.name);
-            }
-        })
-);
+
 
 export function UsersList() {
     const [sortType, setSortType] = useState<'asc' | 'desc'>('asc');
     const sortedUsers = useAppSelector((state) => selectSortedUsers(state, sortType));
-    const selectedUserId = useAppSelector((state) => state.users.selectedUserId);
+    const selectedUserId = useAppSelector(selectSelectedUserId);
 
     return (
         <div className="flex flex-col items-center">
@@ -58,7 +45,7 @@ export function UsersList() {
     );
 }
 
-const UserListItem = memo(function({ userId }: { userId:UserId }) {
+const UserListItem = memo(function({ userId }: { userId:UserId }) { 
     console.log('render userId', userId);
     const user = useAppSelector((state) => state.users.entities[userId]);
 
