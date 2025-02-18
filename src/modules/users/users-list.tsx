@@ -1,13 +1,23 @@
-import { memo, useState } from "react";
-import { useAppDispatch,  useAppSelector} from '../../store';
+import { memo, useEffect, useState } from "react";
+import { useAppDispatch,  useAppSelector, useAppStore} from '../../store';
 import { UserId, userSlice } from './users.slice';
-
-
+import { fetchUsers } from "./model/fetch-users";
 
 export function UsersList() {
+    const dispatch = useAppDispatch();
+    const appStore = useAppStore();
     const [sortType, setSortType] = useState<'asc' | 'desc'>('asc');
     const sortedUsers = useAppSelector((state) => userSlice.selectors.selectSortedUsers(state, sortType));
     const selectedUserId = useAppSelector(userSlice.selectors.selectSelectedUserId);
+    const isPending = useAppSelector(userSlice.selectors.selectIsFetchUsersPending);
+
+    useEffect(() => { 
+        dispatch(fetchUsers)
+    }, [dispatch, appStore]);
+
+    if (isPending) {
+        return <div>Loading...</div>
+    }
 
     return (
         <div className="flex flex-col items-center">

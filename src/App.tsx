@@ -11,6 +11,7 @@ function App() {
           <Counter counterId='second'/>
         </div>
         <UsersList/>
+        <UsersList/>
       </div>
     </>
   )
