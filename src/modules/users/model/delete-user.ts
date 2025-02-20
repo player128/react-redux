@@ -11,7 +11,7 @@ export const deleteUser =
                 await router.navigate("/users");
                 await dispatch(fetchUsers({ refetch: true }));
                 dispatch(userSlice.actions.deleteUserSuccess({ userId }));
-            } catch (e) {
+            } catch  {
                 dispatch(userSlice.actions.deleteUserFailed());
             }
         };
