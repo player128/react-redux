@@ -1,5 +1,5 @@
 import { UserId, userSlice } from "../users.slice";
-import { AppThunk } from "../../../store";
+import { AppThunk } from "../../../shared/redux";
 import { fetchUsers } from "./fetch-users";
 
 export const deleteUser = 

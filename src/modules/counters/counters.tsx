@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../shared/redux";
 import { selectCounter, CounterId, incrementAction, decrementAction } from './counters.slice';
 
 export function Counter({counterId} : {counterId : CounterId}){

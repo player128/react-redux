@@ -1,5 +1,5 @@
 import { UserId, userSlice } from "../users.slice";
-import { AppThunk } from "../../../store";
+import { AppThunk } from "../../../shared/redux";
 
 export const fetchUser = (userId: UserId):AppThunk => (dispatch, getState, { api }) => {
     const isPending = userSlice.selectors.selectIsFetchUserPending(getState()); 

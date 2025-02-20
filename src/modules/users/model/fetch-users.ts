@@ -1,5 +1,5 @@
 import { userSlice } from "../users.slice";
-import { AppThunk } from "../../../store";
+import { AppThunk } from "../../../shared/redux";
 
 export const fetchUsers = 
     ( { refetch }:{refetch?: boolean} = {}):AppThunk<Promise<void>> => 
