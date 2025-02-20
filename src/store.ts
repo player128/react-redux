@@ -2,7 +2,7 @@ import { configureStore, createSelector, ThunkAction, UnknownAction } from '@red
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { userSlice } from './modules/users/users.slice';
 import { counterReducer } from './modules/counters/counters.slice';
-import { api } from './shared/api';
+import { extraArgument } from './extra-argumetn';
 
 // const reducer = (state = initalState, action:Action):State => {
 //     return {
@@ -11,16 +11,14 @@ import { api } from './shared/api';
 //     }
 // }; 
 
-const extraArgument = {
-  api,
-};
+
 
 export const store = configureStore({
   reducer: {
     counters : counterReducer,
     [userSlice.name] : userSlice.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({thunk: {extraArgument}}),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({thunk: {extraArgument}}), 
 });
 
 export type AppState = ReturnType<typeof store.getState>

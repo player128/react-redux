@@ -71,3 +71,12 @@ export function Counter({counterId} : {counterId : CounterId}){
       </div>
     );
 }
+
+export function Counters() {
+  return(
+    <div className='flex flex-col items-center gap-5 py-5'>
+          <Counter counterId='first'/>
+          <Counter counterId='second'/>
+    </div>
+  );
+}
