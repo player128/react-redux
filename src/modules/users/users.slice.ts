@@ -1,4 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { fetchUsers } from './model/fetch-users';
 
 export type UserId = string;
 
@@ -57,21 +58,6 @@ export const userSlice = createSlice({
         selectIsDeleteUserPending:(state) => state.deleteUserStatus === "pending",
     },
     reducers: { // имер уже работает
-        fetchUsersPending: (state) => {
-            state.fetchUsersStatus = "pending";
-        },
-        fetchUsersSuccess: (state, action: PayloadAction<{ users: User[] }>) => {
-            const { users } = action.payload;
-            state.fetchUsersStatus = "success";
-            state.entities = users.reduce((acc, user) => {
-                    acc[user.id] = user;
-                    return acc;
-                }, {} as Record<UserId, User>);
-            state.ids = users.map((user) => user.id);
-        },
-        fetchUsersFailed: (state) => {
-            state.fetchUsersStatus = "failed";
-        },
         fetchUserPending: (state) => {
             state.fetchUserStatus = "pending";
         },
@@ -94,5 +80,20 @@ export const userSlice = createSlice({
             delete state.entities[action.payload.userId];
             state.ids = state.ids.filter(id => id !== action.payload.userId);
         },
-    }
+    },
+    extraReducers: builder => {
+        builder.addCase(fetchUsers.pending, state => {
+            state.fetchUsersStatus = "pending";
+        });
+        builder.addCase(fetchUsers.fulfilled, (state, action) => {
+            state.fetchUsersStatus = "success";
+            state.entities = action.payload.reduce((acc, user) => {
+                acc[user.id] = user; 
+                return acc;}, {} as Record<UserId, User>);
+            state.ids = action.payload.map(user => user.id);
+        });
+        builder.addCase(fetchUsers.rejected, (state) => {
+            state.fetchUsersStatus = "failed";
+        });
+    },
 });
