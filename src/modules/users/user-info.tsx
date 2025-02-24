@@ -13,9 +13,10 @@ export function UserInfo() {
         navigate("..", {relative: "path"});
     };
 
-    const handleDeleteButtonClick = () => {
+    const handleDeleteButtonClick = async () => {
         if (!id)  return;
-        deleteUser(id);
+        await deleteUser(id);
+        navigate("..", {relative: "path"});
     };
 
     if (isLoadingUser || !user) {

@@ -4,13 +4,10 @@ const baseUrl = "http://localhost:3000";
 
 export const baseApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl }),
+    tagTypes: ['Users'],
     endpoints: () => ({}),
 });
-// const UserDtoSchema = z.object({
-//     id: z.string(),
-//     name: z.string(),
-//     description: z.string(),
-// });
+
 
 // export const api = {
 //     getUsers: () => {

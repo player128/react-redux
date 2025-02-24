@@ -5,7 +5,7 @@ import { usersApi } from "./api";
 
 export function UsersList() {
     const [sortType, setSortType] = useState<'asc' | 'desc'>('asc');
-
+    console.log('render users list');
     const {data: users , isLoading} = usersApi.useGetUsersQuery();
     const sortedUsers = useMemo(() => {
         return[...(users ?? [])].sort((a, b) => {

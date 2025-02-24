@@ -3,6 +3,7 @@ import { UsersList } from "../modules/users/users-list";
 import { Counters } from "../modules/counters/counters";
 import { UserInfo } from "../modules/users/user-info";
 import { store } from "./store";
+import { usersApi } from "../modules/users/api";
 
 const loadStore = () => new Promise((resolve) => {
     setTimeout(() => resolve(store), 0);
@@ -29,7 +30,9 @@ export const router = createBrowserRouter([
                 path: "users",
                 element: <UsersList />,
                 loader: () => {
-                    loadStore().then(() => {
+                    loadStore().then( async () => {
+                        console.log('users fethc');
+                        store.dispatch(usersApi.util.prefetch('getUsers', undefined, {}));
                     });
 
                     return null;
@@ -40,6 +43,7 @@ export const router = createBrowserRouter([
                 element: <UserInfo />,
                 loader: ({params}) => {
                     loadStore().then(() => {
+                        store.dispatch(usersApi.util.prefetch('getUser', params.id ?? '', {}));
                     });
                     return null;
                 }
