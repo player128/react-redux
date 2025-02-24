@@ -12,7 +12,7 @@ export const usersApi = baseApi.injectEndpoints({
     endpoints: (create) => ({
         getUsers: create.query<User[], void>({
             query: () => '/users',
-            providesTags: ['Users'],
+            providesTags: ['Users', {type: 'Users', id: 'LIST'}],
             transformResponse: (res: unknown) => UserDtoSchema.array().parse(res), 
         }),
         getUser: create.query<User, UserId>({
@@ -25,7 +25,6 @@ export const usersApi = baseApi.injectEndpoints({
                 method: "DELETE",
                 url: `/users/${userId}`,
             }),
-            invalidatesTags: ['Users'],
         }),
     }),
     overrideExisting: true, // флаг для hotmodulereplacementplugin(HMR) используется для обновления модулей в режиме реального времени без перезагрузки страницы.

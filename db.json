@@ -1,11 +1,6 @@
 {
   "users": [
     {
-      "id": "user1",
-      "name": "John",
-      "description": "My first user"
-    },
-    {
       "id": "user3",
       "name": "Jim",
       "description": "My third user"
